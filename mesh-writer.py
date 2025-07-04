@@ -101,9 +101,6 @@ def wiggle(i, j):
 
 
 def create_surface():
-    """
-    This function defines a 2d flat surface of 100x100 points, ((2*99*99) faces)
-    """
     verticies: list[Point3] = []
     faces: list[Face] = []
 
@@ -117,6 +114,7 @@ def create_surface():
 
     tiff = read_geotiff("test.tif")
     ele = read_geotiff("test3.tif")
+    scale = float(xlen)/6300.0 #How wide is the map area compared to xlen
 
     # Create top surface for the obj
     def create_surface(top: bool, height_offset: float, create_faces=True):
@@ -127,7 +125,7 @@ def create_surface():
                     Point6(
                         i,
                         j,
-                        height_offset + (get_value_for_point(ele, i, j, 1)/2.0 if top else 0.0),
+                        height_offset + (get_value_for_point(ele, i, j, 1)*scale if top else 0.0),
                         get_value_for_point(tiff,i,j,1)/255.0 if top else 255.0,
                         get_value_for_point(tiff,i,j,2)/255.0 if top else 255.0,
                         get_value_for_point(tiff,i,j,3)/255.0 if top else 255.0,
